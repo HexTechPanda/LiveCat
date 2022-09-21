@@ -1,0 +1,31 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /ticket
+
+spring:
+  application:
+    name: ticket-server
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/livecat?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DataSource other config, configure in DruidConfig
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+
+mybatis-plus:
+  type-aliases-package: com.livecat.dto
+  # xxxMapper.xml path
+  mapper-locations: classpath*:com/livecat/event/mapper/**/*.xml,classpath*:com/livecat/ticket/mapper/**/*.xml
+
+logging:
+  level:
+    com.livecat.event.mapper: debug
+
