@@ -19,7 +19,7 @@ public class Ticket implements Serializable {
     private String title;
     private String type;
     private BigDecimal price;
-    private Long stockCount;
+    private Integer stockCount;
     private String detail;
     private Date startSellingDate;
     private Date endSellingDate;

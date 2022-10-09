@@ -8,11 +8,13 @@ import com.livecat.event.mapper.EventMapper;
 import com.livecat.event.req.EventReq;
 import com.livecat.event.service.IEventService;
 import com.livecat.util.base.Result;
-import com.livecat.vo.EventSummaryVO;
+import com.livecat.vo.eventsummary.EventSummaryVo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements IEventService {
@@ -25,8 +27,10 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
             if(StringUtils.isNotEmpty(req.getTitle())){
                 wrapper.like("title", req.getTitle());
             }
-            IPage<Event> eventPage = baseMapper.selectPage(req.getPage(), wrapper);
-            return Result.ok(eventPage.convert(EventSummaryVO::new));
+            List<Event> eventList = baseMapper.selectList(wrapper);
+            return Result.ok(eventList);
+//            IPage<Event> eventPage = baseMapper.selectPage(req.getPage(), wrapper);
+//            return Result.ok(eventPage.convert(EventSummaryVo::new));
         }catch (Exception e){
             logger.error("Error in findEventSummaryVoPage. ", e);
             return Result.error("Error when find event summary!");

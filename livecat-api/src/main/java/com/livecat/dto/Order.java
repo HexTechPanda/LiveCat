@@ -17,13 +17,17 @@ public class Order implements Serializable {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
     private String ticketId;
-    private String ticketCount;
+    private Integer ticketCount;
     private String eventId;
+    private String customerId;
     private BigDecimal totalPrice;
+    // 0:canceled, 1:not paid, 2:have paid, 3:delivered, 4:expired, 5:refunded
     private Integer status;
     private Date createTime;
     private Date payExpireTime;
     private Date payTime;
+    private String paymentLink;
+    private String paymentId;
     private String deliveryEmail;
     private String deliveryAddress;
     private String phone;

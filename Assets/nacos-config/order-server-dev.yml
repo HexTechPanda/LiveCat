@@ -1,0 +1,40 @@
+server:
+  port: 8005
+  servlet:
+    context-path: /order
+
+spring:
+  application:
+    name: order-server
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/livecat_order?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DataSource other config, configure in DruidConfig
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 3
+    password: 234567
+    jedis:
+      pool:
+        max-idle: 500
+        max-wait: 500000
+        max-active: 1000
+
+mybatis-plus:
+  type-aliases-package: com.livecat.dto
+  mapper-locations: classpath*:com/livecat/order/mapper/**/*.xml
+
+logging:
+  level:
+    com.livecat.order.mapper: debug
+

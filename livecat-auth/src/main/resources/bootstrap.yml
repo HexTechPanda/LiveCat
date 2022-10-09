@@ -1,18 +1,12 @@
-server:
-  port: 7001
-  servlet:
-    context-path: /auth #  localhost:7001/auth
-
 spring:
-  datasource:
-    username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1:3306/livecat_auth?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    initialSize: 8
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
+  application:
+    name: auth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+  profiles:
+    active: dev # auth-server-dev.yml

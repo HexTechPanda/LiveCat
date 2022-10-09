@@ -1,0 +1,471 @@
+{
+	"info": {
+		"_postman_id": "e83de440-8c98-4980-a948-d5939b4d8c7a",
+		"name": "LiveCat API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8610304"
+	},
+	"item": [
+		{
+			"name": "Login 6001",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "musicfan1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password333",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:6001/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register 6001",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"david6\",\r\n    \"password\": \"password333\",\r\n    \"repPassword\": \"password333\",\r\n    \"nickName\": \"musicfan2nick\",\r\n    \"mobile\": \"88886665\",\r\n    \"email\": \"73887@cc.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:6001/system/api/user/register",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"system",
+						"api",
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Username 6001",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:6001/system/api/user/username/admin",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"system",
+						"api",
+						"user",
+						"username",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token",
+							"type": "text"
+						},
+						{
+							"key": "refresh_token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiI4ODg4NjY2NiIsInVpZCI6IjE1Nzg3Mjc0MzQ3OTMwNjI0MDEiLCJlbWFpbCI6Ijg4OEBjYy5jb20iLCJuaWNrTmFtZSI6Im11c2ljZmFuMW5pY2siLCJ1c2VybmFtZSI6Im11c2ljZmFuMSJ9LCJ1c2VyX25hbWUiOiJtdXNpY2ZhbjEiLCJzY29wZSI6WyJhbGwiXSwiYXRpIjoiYWQ1NjJkODctYWEzZi00OTJhLThjYzUtOGFmODI1MzU4MGRmIiwiZXhwIjoxNjY3ODk3MzkxLCJhdXRob3JpdGllcyI6WyJjdXN0b21lciJdLCJqdGkiOiIxODcwM2NhNC0yZjEzLTQxYzgtYTQ4ZC1mOWU3NzQ3ZmYwZTciLCJjbGllbnRfaWQiOiJsaXZlY2F0LWFkbWluIn0.pu5UdLQYxyx_tlQh-ZrmdVkzF0rNukwmzJqxo413JZPbyy5D8fGPAwle0LsmJYQUYy-BF17bElIEc6vE-Z-36PfA3mjeKztfH7pYb-B8Sn3VBY5tzbC7TiOoVNsdiIog4BuiC42dLYkMHvba6xg22i_SorTqbNMAPtHER6yutq5qepapQ-UcoDsJ6jjj9djz52iv6m07n8LmqrJk0eu-BZeDkPJc9hWVJ5kRTZeXll2AD7iS_Ovkq5CzRYspYkAPvSgvG0VnaklLA86NmE5TLKVFchENO0YSH6vGEl4DBqsSmYETQ19DMXKBrULZpUbExrBhINZL4Jy5XH-qki_KDQ",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:6001/auth/oauth/token",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"auth",
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:6001/auth/logout?accessToken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiI4ODg4NjY2NiIsInVpZCI6IjE1Nzg3Mjc0MzQ3OTMwNjI0MDEiLCJlbWFpbCI6Ijg4OEBjYy5jb20iLCJuaWNrTmFtZSI6Im11c2ljZmFuMW5pY2siLCJ1c2VybmFtZSI6Im11c2ljZmFuMSJ9LCJ1c2VyX25hbWUiOiJtdXNpY2ZhbjEiLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjY1MzQ4NDE1LCJhdXRob3JpdGllcyI6WyJjdXN0b21lciJdLCJqdGkiOiI3NGE0MmNhNy02ODNkLTQ4ZDgtYjYyYS01ODUyMDY4MTAzNDMiLCJjbGllbnRfaWQiOiJsaXZlY2F0LWFkbWluIn0.MirsMr3TsG7ilDXgnpmKxJ6QtWOsXie3IoCw9RbWNI9U743coduRT5Nc8iKAv7340Hcb22oBqzQ37MYSICpUvDpqRh2Iq3g2IYvofDbsb8R3ZYP5s89z08S0x-gXdzEPTMjnLROpbv9uv6i1CjYm5WS8U1ayWvaTjxL6Npn1_csITGuUQOMDMxA7yqjPvec6MnF7kMDXkmF_6oCooj7CRTtokhwhT38S7xsQq0dgZXi3xnlN2eWUBYO-X4cxB1DbUh2ZuuQPt_P-v_coj0PHVy2G04ZOQScYkx1NmznLFe0SCosOm9jIFHr51ch7ZS9CrNgkEabnrnWUekzrbHwIoA",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"auth",
+						"logout"
+					],
+					"query": [
+						{
+							"key": "accessToken",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiI4ODg4NjY2NiIsInVpZCI6IjE1Nzg3Mjc0MzQ3OTMwNjI0MDEiLCJlbWFpbCI6Ijg4OEBjYy5jb20iLCJuaWNrTmFtZSI6Im11c2ljZmFuMW5pY2siLCJ1c2VybmFtZSI6Im11c2ljZmFuMSJ9LCJ1c2VyX25hbWUiOiJtdXNpY2ZhbjEiLCJzY29wZSI6WyJhbGwiXSwiZXhwIjoxNjY1MzQ4NDE1LCJhdXRob3JpdGllcyI6WyJjdXN0b21lciJdLCJqdGkiOiI3NGE0MmNhNy02ODNkLTQ4ZDgtYjYyYS01ODUyMDY4MTAzNDMiLCJjbGllbnRfaWQiOiJsaXZlY2F0LWFkbWluIn0.MirsMr3TsG7ilDXgnpmKxJ6QtWOsXie3IoCw9RbWNI9U743coduRT5Nc8iKAv7340Hcb22oBqzQ37MYSICpUvDpqRh2Iq3g2IYvofDbsb8R3ZYP5s89z08S0x-gXdzEPTMjnLROpbv9uv6i1CjYm5WS8U1ayWvaTjxL6Npn1_csITGuUQOMDMxA7yqjPvec6MnF7kMDXkmF_6oCooj7CRTtokhwhT38S7xsQq0dgZXi3xnlN2eWUBYO-X4cxB1DbUh2ZuuQPt_P-v_coj0PHVy2G04ZOQScYkx1NmznLFe0SCosOm9jIFHr51ch7ZS9CrNgkEabnrnWUekzrbHwIoA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:6001/ticket/api/events",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"ticket",
+						"api",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Event Detail",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "leopanda",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "livecat-admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:6001/ticket/api/events/1244940138650423298",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"ticket",
+						"api",
+						"events",
+						"1244940138650423298"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiIxODg4ODg4ODg4OCIsInVpZCI6IjkiLCJlbWFpbCI6Im1lbmd4dWVndTg4OEAxNjMuY29tIiwibmlja05hbWUiOiJMaXZlZG9nIiwidXNlcm5hbWUiOiJhZG1pbiJ9LCJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2NjUzMzA4MzUsImF1dGhvcml0aWVzIjpbImN1c3RvbWVyIl0sImp0aSI6ImI4ODMwOTM5LTM3MzctNDI5Mi1iM2UzLTA2ZjJkZWExM2MzZiIsImNsaWVudF9pZCI6ImxpdmVjYXQtYWRtaW4ifQ.VUQMZAxkUOrFTXlqDMJWRl6q9mXsvF5BpF4Q0MujID1L8Yd4cjJ5d6gYti5_qD4cr1gRI94aZKhfGutfkhSTvmdCX9Qdqf5pPg0lFv-VFAvU_lnOm3yz2LTXg_bx0BVU8alr6KHtaGd8Xh65hj0L6R1M0Vp5bxDQzUelS89iOYvFkaPuEy19bSoLP6EAP93XqN6pfGRNgWJ7gyYfRGO2AQdAo_YszM0qt6tFuvxkZJDoKM935Gw6GFmS7EVXH9156Hu-s-0fRZ_oqteCjUvN7MHiYNIxMZchWEdougqaKBpuC5M6Xc1vvZZkuTDk8Ye9gwkQz7YrXCdX7H7mNnT3MA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:6001/order/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"order",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Order Detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiIxODg4ODg4ODg4OCIsInVpZCI6IjkiLCJlbWFpbCI6Im1lbmd4dWVndTg4OEAxNjMuY29tIiwibmlja05hbWUiOiJMaXZlZG9nIiwidXNlcm5hbWUiOiJhZG1pbiJ9LCJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2NjUzMzA4MzUsImF1dGhvcml0aWVzIjpbImN1c3RvbWVyIl0sImp0aSI6ImI4ODMwOTM5LTM3MzctNDI5Mi1iM2UzLTA2ZjJkZWExM2MzZiIsImNsaWVudF9pZCI6ImxpdmVjYXQtYWRtaW4ifQ.VUQMZAxkUOrFTXlqDMJWRl6q9mXsvF5BpF4Q0MujID1L8Yd4cjJ5d6gYti5_qD4cr1gRI94aZKhfGutfkhSTvmdCX9Qdqf5pPg0lFv-VFAvU_lnOm3yz2LTXg_bx0BVU8alr6KHtaGd8Xh65hj0L6R1M0Vp5bxDQzUelS89iOYvFkaPuEy19bSoLP6EAP93XqN6pfGRNgWJ7gyYfRGO2AQdAo_YszM0qt6tFuvxkZJDoKM935Gw6GFmS7EVXH9156Hu-s-0fRZ_oqteCjUvN7MHiYNIxMZchWEdougqaKBpuC5M6Xc1vvZZkuTDk8Ye9gwkQz7YrXCdX7H7mNnT3MA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:6001/order/orders/1579015256632487937",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"order",
+						"orders",
+						"1579015256632487937"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiIxODg4ODg4ODg4OCIsInVpZCI6IjkiLCJlbWFpbCI6Im1lbmd4dWVndTg4OEAxNjMuY29tIiwibmlja05hbWUiOiJMaXZlZG9nIiwidXNlcm5hbWUiOiJhZG1pbiJ9LCJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2NjUzMzA4MzUsImF1dGhvcml0aWVzIjpbImN1c3RvbWVyIl0sImp0aSI6ImI4ODMwOTM5LTM3MzctNDI5Mi1iM2UzLTA2ZjJkZWExM2MzZiIsImNsaWVudF9pZCI6ImxpdmVjYXQtYWRtaW4ifQ.VUQMZAxkUOrFTXlqDMJWRl6q9mXsvF5BpF4Q0MujID1L8Yd4cjJ5d6gYti5_qD4cr1gRI94aZKhfGutfkhSTvmdCX9Qdqf5pPg0lFv-VFAvU_lnOm3yz2LTXg_bx0BVU8alr6KHtaGd8Xh65hj0L6R1M0Vp5bxDQzUelS89iOYvFkaPuEy19bSoLP6EAP93XqN6pfGRNgWJ7gyYfRGO2AQdAo_YszM0qt6tFuvxkZJDoKM935Gw6GFmS7EVXH9156Hu-s-0fRZ_oqteCjUvN7MHiYNIxMZchWEdougqaKBpuC5M6Xc1vvZZkuTDk8Ye9gwkQz7YrXCdX7H7mNnT3MA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ticketId\": \"2\",\r\n    \"quantity\": \"10\",\r\n    \"deliveryEmail\": \"test@test.com\",\r\n    \"deliveryAddress\": \"No.1 test street\",\r\n    \"phone\": \"88889999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:6001/ticket/purchase",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"ticket",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mock Payment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiIxODg4ODg4ODg4OCIsInVpZCI6IjkiLCJlbWFpbCI6Im1lbmd4dWVndTg4OEAxNjMuY29tIiwibmlja05hbWUiOiJMaXZlZG9nIiwidXNlcm5hbWUiOiJhZG1pbiJ9LCJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2NjUzMzA4MzUsImF1dGhvcml0aWVzIjpbImN1c3RvbWVyIl0sImp0aSI6ImI4ODMwOTM5LTM3MzctNDI5Mi1iM2UzLTA2ZjJkZWExM2MzZiIsImNsaWVudF9pZCI6ImxpdmVjYXQtYWRtaW4ifQ.VUQMZAxkUOrFTXlqDMJWRl6q9mXsvF5BpF4Q0MujID1L8Yd4cjJ5d6gYti5_qD4cr1gRI94aZKhfGutfkhSTvmdCX9Qdqf5pPg0lFv-VFAvU_lnOm3yz2LTXg_bx0BVU8alr6KHtaGd8Xh65hj0L6R1M0Vp5bxDQzUelS89iOYvFkaPuEy19bSoLP6EAP93XqN6pfGRNgWJ7gyYfRGO2AQdAo_YszM0qt6tFuvxkZJDoKM935Gw6GFmS7EVXH9156Hu-s-0fRZ_oqteCjUvN7MHiYNIxMZchWEdougqaKBpuC5M6Xc1vvZZkuTDk8Ye9gwkQz7YrXCdX7H7mNnT3MA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:6001/order/mock-payment/3656a0ff04ab4ff092360ac9743fc16a",
+					"host": [
+						"localhost"
+					],
+					"port": "6001",
+					"path": [
+						"order",
+						"mock-payment",
+						"3656a0ff04ab4ff092360ac9743fc16a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ticket by eventId",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mbyI6eyJtb2JpbGUiOiIxODg4ODg4ODg4OCIsInVpZCI6IjkiLCJlbWFpbCI6Im1lbmd4dWVndTg4OEAxNjMuY29tIiwibmlja05hbWUiOiJMaXZlZG9nIiwidXNlcm5hbWUiOiJhZG1pbiJ9LCJ1c2VyX25hbWUiOiJhZG1pbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2NjUzMzA4MzUsImF1dGhvcml0aWVzIjpbImN1c3RvbWVyIl0sImp0aSI6ImI4ODMwOTM5LTM3MzctNDI5Mi1iM2UzLTA2ZjJkZWExM2MzZiIsImNsaWVudF9pZCI6ImxpdmVjYXQtYWRtaW4ifQ.VUQMZAxkUOrFTXlqDMJWRl6q9mXsvF5BpF4Q0MujID1L8Yd4cjJ5d6gYti5_qD4cr1gRI94aZKhfGutfkhSTvmdCX9Qdqf5pPg0lFv-VFAvU_lnOm3yz2LTXg_bx0BVU8alr6KHtaGd8Xh65hj0L6R1M0Vp5bxDQzUelS89iOYvFkaPuEy19bSoLP6EAP93XqN6pfGRNgWJ7gyYfRGO2AQdAo_YszM0qt6tFuvxkZJDoKM935Gw6GFmS7EVXH9156Hu-s-0fRZ_oqteCjUvN7MHiYNIxMZchWEdougqaKBpuC5M6Xc1vvZZkuTDk8Ye9gwkQz7YrXCdX7H7mNnT3MA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8001/ticket/tickets?eventId=1244940138650423298",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"ticket",
+						"tickets"
+					],
+					"query": [
+						{
+							"key": "eventId",
+							"value": "1244940138650423298"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

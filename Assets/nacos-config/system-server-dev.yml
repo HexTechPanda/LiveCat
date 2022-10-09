@@ -1,0 +1,37 @@
+swagger:
+  title: livecat system API document
+  description: user management
+  exclude-path: /error
+
+server:
+  port: 8003
+  servlet:
+    context-path: /system
+    
+spring:
+  application:
+    name: system-server
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/livecat_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DruidConfig config
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+
+mybatis-plus:
+  type-aliases-package: com.livecat.dto
+  # xxxMapper.xml path
+  mapper-locations: classpath*:com/livecat/system/mapper/**/*.xml
+
+
+# logger level, would print sql
+logging:
+  level:
+    com.livecat.system.mapper: debug

@@ -47,6 +47,15 @@ public final class Result implements Serializable {
         logger.debug("return result: code={}, message={}", resultEnum.getCode(), resultEnum.getDesc());
         return new Result(resultEnum.getCode(), resultEnum.getDesc(), null);
     }
+    public static Result build(ResultEnum resultEnum, Object data) {
+        logger.debug("return result: code={}, message={}", resultEnum.getCode(), resultEnum.getDesc());
+        return new Result(resultEnum.getCode(), resultEnum.getDesc(), data);
+    }
+
+    public static Result buildWithArgs(ResultEnum resultEnum, Object... args) {
+        logger.debug("return result: code={}, message={}", resultEnum.getCode(), String.format(resultEnum.getDesc(), args));
+        return new Result(resultEnum.getCode(), String.format(resultEnum.getDesc(), args), null);
+    }
 
     public String toJsonString() {
         return JSON.toJSONString(this);

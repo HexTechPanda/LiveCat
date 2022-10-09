@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
-@MapperScan({"com.livecat.event.mapper", "com.livecat.ticket.mapper"})
+@MapperScan({"com.livecat.event.mapper", "com.livecat.ticket.mapper", "com.livecat.order.mapper"})
 @Configuration
 public class MyBatisPlusConfig {
     @Bean

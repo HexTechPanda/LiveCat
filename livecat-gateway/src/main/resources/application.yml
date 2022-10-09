@@ -1,0 +1,63 @@
+#server:
+#  port: 6001
+#
+#spring:
+#  application:
+#    name: gateway-server
+#    redis:
+#      host: localhost
+#      port: 6379
+#      password:
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#    gateway:
+#      discovery:
+#        locator:
+#          enabled: true
+#      routes:
+#        - id: livecat-ticket
+##          uri: http://localhost:8001
+#          uri: lb://ticket-server
+#          predicates:
+#            - Path=/ticket/**
+#          filters:
+#            - name: RequestRateLimiter
+#              args:
+#                # Throttling filter bean name
+#                key-resolver: '#{@uriKeyResolver}'
+#                # How many requests per second you want each user to perform. The rate at which the token bucket is filled.
+#                redis-rate-limiter.replenishRate: 10
+#                # Allows the user to complete the maximum number of requests in one second. The maximum number of tokens the token bucket can hold. If set to 0 will block all requests.
+#                redis-rate-limiter.burstCapacity: 20
+#        - id: livecat-auth
+#          uri: lb://auth-server
+#          predicates:
+#            - Path=/auth/**
+#          filters:
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: '#{@uriKeyResolver}'
+#                redis-rate-limiter.replenishRate: 10
+#                redis-rate-limiter.burstCapacity: 20
+#        - id: livecat-system
+#          uri: lb://system-server
+#          predicates:
+#            - Path=/system/**
+#          filters:
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: '#{@uriKeyResolver}'
+#                redis-rate-limiter.replenishRate: 10
+#                redis-rate-limiter.burstCapacity: 20
+#        - id: livecat-order
+#          uri: lb://order-server
+#          predicates:
+#            - Path=/order/**
+#          filters:
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: '#{@uriKeyResolver}'
+#                redis-rate-limiter.replenishRate: 10
+#                redis-rate-limiter.burstCapacity: 20

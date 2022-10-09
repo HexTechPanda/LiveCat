@@ -13,6 +13,8 @@
         <module>livecat-api</module>
         <module>livecat-ticket</module>
         <module>livecat-order</module>
+        <module>livecat-system</module>
+        <module>livecat-gateway</module>
     </modules>
     <packaging>pom</packaging>
 

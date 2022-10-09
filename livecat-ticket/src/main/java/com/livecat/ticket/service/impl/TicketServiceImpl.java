@@ -21,4 +21,26 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         }
         return baseMapper.selectList(wrapper);
     }
+
+    @Override
+    public Ticket findTicketById(String ticketId) {
+        return baseMapper.selectById(ticketId);
+    }
+
+    @Override
+    public boolean reduceTicketStockById(String ticketId, Integer quantity) {
+        if(StringUtils.isBlank(ticketId) || quantity == null){
+            return false;
+        }
+        Ticket ticket = baseMapper.selectById(ticketId);
+        Integer stock = ticket.getStockCount();
+        if(stock != null && stock - quantity >= 0){
+            ticket.setStockCount(stock - quantity);
+            baseMapper.updateById(ticket);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
 }
