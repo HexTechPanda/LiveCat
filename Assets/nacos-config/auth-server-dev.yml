@@ -7,7 +7,7 @@ spring:
   redis:
     host: localhost
     port: 6379
-    password: # no password
+    password:
   datasource:
     username: root
     password: root

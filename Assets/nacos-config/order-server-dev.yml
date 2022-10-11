@@ -22,13 +22,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    timeout: 3
-    password: 234567
-    jedis:
-      pool:
-        max-idle: 500
-        max-wait: 500000
-        max-active: 1000
+    password:
 
 mybatis-plus:
   type-aliases-package: com.livecat.dto
