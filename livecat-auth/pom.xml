@@ -89,7 +89,7 @@
                 </executions>
                 <configuration>
                     <repository>livecat-auth</repository>
-                    <tag>${project.version}</tag>
+                    <tag>latest</tag>
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
