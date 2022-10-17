@@ -80,8 +80,25 @@ jobs:
         # docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         # docker push 
 
+        # push livecat-auth
         docker tag livecat-auth:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
         docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
+
+        # push livecat-gateway
+        docker tag livecat-gateway:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+
+        # push livecat-order
+        docker tag livecat-order:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
+        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
+
+        # push livecat-system
+        docker tag livecat-system:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
+        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
+
+        # push livecat-ticket
+        docker tag livecat-ticket:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
+        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
         
         # echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     - name: Fill in the new image ID in the Amazon ECS task definition
