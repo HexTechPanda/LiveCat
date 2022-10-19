@@ -1,7 +1,6 @@
 package com.livecat.feign;
 
 import com.livecat.dto.Order;
-import com.livecat.dto.SysUser;
 import com.livecat.util.base.Result;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
