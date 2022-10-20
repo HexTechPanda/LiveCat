@@ -1,20 +1,17 @@
-package com.livecat.dto;
+package com.livecat.vo.orderDetail;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.livecat.dto.Order;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@TableName("livecat_order")
 @Data
-public class Order implements Serializable {
-    private static final long serialVersionUID = -4212704918615369922L;
-
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderDetailResponseVo {
     private String id;
     private String ticketId;
     private String ticketType;

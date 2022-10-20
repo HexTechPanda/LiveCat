@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.livecat.ticket.mapper.TicketMapper">
 
+    <update id="reduceStack">
+        UPDATE livecat_ticket SET stock_count = stock_count - #{quantity}
+        WHERE id=#{ticketId} AND stock_count - #{quantity} >= 0;
+    </update>
+
 </mapper>

@@ -4,14 +4,12 @@ import com.livecat.dto.Order;
 import com.livecat.dto.Ticket;
 import com.livecat.event.service.IEventService;
 import com.livecat.feign.IFeignOrderController;
-import com.livecat.oauth2.config.AuthUtil;
 import com.livecat.purchase.service.IPurchaseService;
 import com.livecat.ticket.service.ITicketService;
 import com.livecat.util.UUIDUtil;
 import com.livecat.util.base.Result;
 import com.livecat.util.enums.ResultEnum;
 import com.livecat.vo.purchase.PurchaseRequestVo;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,19 +31,14 @@ public class PurchaseServiceImpl implements IPurchaseService {
 
     @Transactional
     @Override
-    public Result doPurchase(PurchaseRequestVo purchaseRequestVo) {
-        String customerId = AuthUtil.getUserInfo().getId();
-        if(StringUtils.isEmpty(customerId)){
-            return Result.error("Authentication exception");
-        }
-        if(purchaseRequestVo == null || purchaseRequestVo.getQuantity() == null){
-            return Result.error("Bad request.");
-        }
+    public Result doPurchase(PurchaseRequestVo purchaseRequestVo, String customerId) {
         Integer quantity = purchaseRequestVo.getQuantity();
+        // get target ticket
         Ticket targetTicket = ticketService.findTicketById(purchaseRequestVo.getTicketId());
         if(targetTicket == null){
-            Result.error("Ticket Object not found.");
+            return Result.error("Ticket Object not found.");
         }
+        // reduce ticket stock count
         Integer stock = targetTicket.getStockCount();
         if(stock != null && stock - quantity >= 0){
             boolean reduceStatus = ticketService.reduceTicketStockById(targetTicket.getId(), quantity);
@@ -54,15 +47,17 @@ public class PurchaseServiceImpl implements IPurchaseService {
             }
             Order order = new Order();
             order.setTicketId(purchaseRequestVo.getTicketId());
+            order.setTicketType(targetTicket.getType());
             order.setTicketCount(purchaseRequestVo.getQuantity());
             order.setEventId(targetTicket.getEventId());
+            order.setEventTitle(eventService.findEventTitleById(targetTicket.getEventId()));
             order.setCustomerId(customerId);
             order.setTotalPrice(targetTicket.getPrice().multiply(BigDecimal.valueOf(purchaseRequestVo.getQuantity())));
             order.setStatus(1);
             Date createTime = new Date();
             Date payExpireTime = new Date(createTime.getTime() + 1800000);
             order.setCreateTime(createTime);
-            // Mock payment
+            // generate mock payment id and link.
             order.setPaymentId(mockGetPaymentId());
             order.setPaymentLink(mockGetPaymentLink(order.getPaymentId()));
 
@@ -83,4 +78,6 @@ public class PurchaseServiceImpl implements IPurchaseService {
     private String mockGetPaymentLink(String paymentId){
         return "/order/mock-payment/" + paymentId;
     }
+
+
 }

@@ -27,7 +27,8 @@ import java.io.IOException;
  */
 @Component("customAuthenticationSuccessHandler")
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-    Logger logger = LoggerFactory.getLogger(getClass());private static final String HEADER_TYPE = "Basic ";
+    Logger logger = LoggerFactory.getLogger(getClass());
+    private static final String HEADER_TYPE = "Basic ";
 
     @Autowired
     private ClientDetailsService clientDetailsService;

@@ -32,15 +32,14 @@ public class TicketServiceImpl extends ServiceImpl<TicketMapper, Ticket> impleme
         if(StringUtils.isBlank(ticketId) || quantity == null){
             return false;
         }
-        Ticket ticket = baseMapper.selectById(ticketId);
-        Integer stock = ticket.getStockCount();
-        if(stock != null && stock - quantity >= 0){
-            ticket.setStockCount(stock - quantity);
-            baseMapper.updateById(ticket);
-        } else {
-            return false;
-        }
+        baseMapper.reduceStack(ticketId, quantity);
         return true;
     }
 
+    @Override
+    public List<Ticket> listTicket() {
+        QueryWrapper<Ticket> wrapper = new QueryWrapper();
+        wrapper.gt("stock_count", 0);
+        return baseMapper.selectList(wrapper);
+    }
 }
