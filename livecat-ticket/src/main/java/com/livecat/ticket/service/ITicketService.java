@@ -10,4 +10,5 @@ public interface ITicketService extends IService<Ticket> {
     List<Ticket> findTicketListByEventId(String eventId);
     Ticket findTicketById(String ticketId);
     boolean reduceTicketStockById(String ticketId, Integer quantity);
+    List<Ticket> listTicket();
 }

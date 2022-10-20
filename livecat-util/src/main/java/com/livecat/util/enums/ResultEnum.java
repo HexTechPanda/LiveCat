@@ -19,7 +19,10 @@ public enum ResultEnum {
     AUTH_USERNAME_NONE(1405, "Username should not be empty"),
     AUTH_PASSWORD_NONE(1406, "Password should not be empty"),
     MENU_NO(306, "No access, please contact admin"),
-    TICKETS_SOLD_OUT(602, "Purchase failed, tickets sold out");
+    // about ticket
+    TICKET_NOT_FOUND(601, "Target ticket not found."),
+    TICKETS_SOLD_OUT(602, "Purchase failed, tickets sold out."),
+    INSUFFICIENT_STOCK(603, "Purchase failed, insufficient ticket stock.");
 
     private Integer code;
     private String desc;
