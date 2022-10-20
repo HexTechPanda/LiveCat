@@ -28,8 +28,6 @@ name: CI
 
 on:
   push:
-    tags:
-      - v[0-9]+.*
     branches: [ "master" ]
 
 env:
