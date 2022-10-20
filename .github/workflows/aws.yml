@@ -24,17 +24,15 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: Deploy to Amazon ECS
+name: CI
 
 # on:
   # push:
     #branches: [ "master" ]
-  # 改成release触发
 on:
-  release:
-    types: [published]
-  # push:
-  #  branches: [ "master" ]
+  push:
+    tags:
+      - v[0-9]+.*
 
 
 env:
