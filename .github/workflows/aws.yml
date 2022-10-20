@@ -96,7 +96,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: .aws/livecat-auth.json
-        container-name: livecat-aut
+        container-name: livecat-auth
         image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
 
     # - name: Deploy Amazon ECS task definition
