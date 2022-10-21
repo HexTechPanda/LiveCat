@@ -127,3 +127,52 @@ jobs:
         service: livecat-gateway-01
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
+    
+    - name: Fill in the new image ID in livecat-order
+      id: task-order
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: .aws/livecat-order.json
+        container-name: livecat-order
+        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
+
+    - name: Deploy livecat-order task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: livecat-order-01
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Fill in the new image ID in livecat-system
+      id: task-system
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: .aws/livecat-system.json
+        container-name: livecat-system
+        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
+
+    - name: Deploy livecat-system task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: livecat-system-01
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Fill in the new image ID in livecat-ticket
+      id: task-ticket
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: .aws/livecat-ticket.json
+        container-name: livecat-ticket
+        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
+
+    - name: Deploy livecat-ticket task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: livecat-ticket-01
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+    
