@@ -91,6 +91,10 @@ jobs:
         docker tag livecat-auth:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
         docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
 
+        # push livecat-gateway
+        docker tag livecat-gateway:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -99,13 +103,6 @@ jobs:
         container-name: livecat-auth
         image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
 
-    # - name: Deploy Amazon ECS task definition
-    #  uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-    #  with:
-    #    task-definition: ${{ steps.task-def.outputs.task-definition }}
-    #    service: ${{ env.ECS_SERVICE }}
-    #    cluster: ${{ env.ECS_CLUSTER }}
-    #    wait-for-service-stability: true
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
@@ -114,3 +111,19 @@ jobs:
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
     
+
+    - name: Fill in the new image ID in livecat-gateway
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: .aws/livecat-gateway.json
+        container-name: livecat-gateway
+        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+
+    - name: Deploy livecat-gateway task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: livecat-gateway-01
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
