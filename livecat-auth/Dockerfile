@@ -23,4 +23,5 @@ COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar", \
     "-Dspring.cloud.nacos.discovery.serverAddr=${NACOS_SERVER_ADDR}", \
     "-Dspring.cloud.nacos.config.serverAddr=${NACOS_SERVER_ADDR}", \
-    "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "/app.jar"]
+    "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", \
+    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "/app.jar"]
