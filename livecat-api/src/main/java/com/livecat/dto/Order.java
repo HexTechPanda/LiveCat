@@ -22,6 +22,7 @@ public class Order implements Serializable {
     private String eventId;
     private String eventTitle;
     private String customerId;
+    private String providerId;
     private BigDecimal totalPrice;
     // 0:canceled, 1:not paid, 2:have paid, 3:delivered, 4:expired, 5:refunded
     private Integer status;

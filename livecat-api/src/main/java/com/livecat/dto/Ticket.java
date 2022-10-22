@@ -25,4 +25,5 @@ public class Ticket implements Serializable {
     private Date endSellingDate;
 
     private String eventId;
+    private String providerId;
 }

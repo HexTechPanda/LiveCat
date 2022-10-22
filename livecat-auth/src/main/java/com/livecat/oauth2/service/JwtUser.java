@@ -16,7 +16,7 @@ public class JwtUser implements UserDetails {
     @ApiModelProperty(value = "username")
     private String username;
 
-    @JSONField(serialize = false) // 忽略转json
+    @JSONField(serialize = false) // ignored in json
     @ApiModelProperty(value = "password, encryption, admin/1234")
     private String password;
 

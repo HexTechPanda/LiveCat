@@ -9,4 +9,8 @@ public interface IOrderService extends IService<Order> {
     Result findByOrderId(String orderId);
     Result findOrderList();
     Result mockPaid(String paymentId);
+
+    // provider api
+    Result providerFindOrderList();
+    Result providerUpdateOrderStatus(String orderId, Integer status);
 }
