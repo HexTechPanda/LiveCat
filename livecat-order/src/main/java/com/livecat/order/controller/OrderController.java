@@ -18,6 +18,11 @@ public class OrderController {
     @Autowired
     IOrderService orderService;
 
+    @GetMapping("/api")
+    public String healthCheck(){
+        return "Health check OK.";
+    }
+
     @ApiOperation("Customer get history order list")
     @GetMapping("/orders")
     public Result findOrderList(){
