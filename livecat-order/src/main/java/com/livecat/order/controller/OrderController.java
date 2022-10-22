@@ -20,7 +20,7 @@ public class OrderController {
 
     @GetMapping("/api")
     public String healthCheck(){
-        return "Health check OK.";
+        return "Health check OK!";
     }
 
     @ApiOperation("Customer get history order list")
