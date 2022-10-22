@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +51,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
+    @Resource
     private TokenStore tokenStore;
 
-    @Autowired
+    @Resource
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
-    @Autowired
+    @Resource
     private TokenEnhancer jwtTokenEnhancer;
 
     /**
