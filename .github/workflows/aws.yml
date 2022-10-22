@@ -102,42 +102,50 @@ jobs:
         aws ecs describe-task-definition --task-definition livecat-ticket --query taskDefinition > livecat-ticket-task-definition.json
         aws ecs describe-task-definition --task-definition livecat-order --query taskDefinition > livecat-order-task-definition.json
 
-    - name: Deploy Task livecat-gateway
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: livecat-gateway-task-definition.json
-        service: livecat-gateway
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+    - name: Restart services
+      run: |
+        aws ecs update-service --force-new-deployment --service livecat-gateway --cluster ${{ env.ECS_CLUSTER }}
+        aws ecs update-service --force-new-deployment --service livecat-system --cluster ${{ env.ECS_CLUSTER }}
+        aws ecs update-service --force-new-deployment --service livecat-auth --cluster ${{ env.ECS_CLUSTER }}
+        aws ecs update-service --force-new-deployment --service livecat-ticket --cluster ${{ env.ECS_CLUSTER }}
+        aws ecs update-service --force-new-deployment --service livecat-order --cluster ${{ env.ECS_CLUSTER }}
 
-    - name: Deploy Task livecat-system
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: livecat-system-task-definition.json
-        service: livecat-system
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
-
-    - name: Deploy Task livecat-auth
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: livecat-auth-task-definition.json
-        service: livecat-auth
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
-
-    - name: Deploy Task livecat-ticket
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: livecat-ticket-task-definition.json
-        service: livecat-ticket
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
-
-    - name: Deploy Task livecat-order
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: livecat-order-task-definition.json
-        service: livecat-order
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+#    - name: Deploy Task livecat-gateway
+#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#      with:
+#        task-definition: livecat-gateway-task-definition.json
+#        service: livecat-gateway
+#        cluster: ${{ env.ECS_CLUSTER }}
+#        wait-for-service-stability: true
+#
+#    - name: Deploy Task livecat-system
+#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#      with:
+#        task-definition: livecat-system-task-definition.json
+#        service: livecat-system
+#        cluster: ${{ env.ECS_CLUSTER }}
+#        wait-for-service-stability: true
+#
+#    - name: Deploy Task livecat-auth
+#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#      with:
+#        task-definition: livecat-auth-task-definition.json
+#        service: livecat-auth
+#        cluster: ${{ env.ECS_CLUSTER }}
+#        wait-for-service-stability: true
+#
+#    - name: Deploy Task livecat-ticket
+#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#      with:
+#        task-definition: livecat-ticket-task-definition.json
+#        service: livecat-ticket
+#        cluster: ${{ env.ECS_CLUSTER }}
+#        wait-for-service-stability: true
+#
+#    - name: Deploy Task livecat-order
+#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+#      with:
+#        task-definition: livecat-order-task-definition.json
+#        service: livecat-order
+#        cluster: ${{ env.ECS_CLUSTER }}
+#        wait-for-service-stability: true
