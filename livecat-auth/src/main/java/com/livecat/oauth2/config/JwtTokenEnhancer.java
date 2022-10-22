@@ -16,11 +16,13 @@ public class JwtTokenEnhancer implements TokenEnhancer {
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken oAuth2AccessToken, OAuth2Authentication oAuth2Authentication) {
+        System.out.println("start enhance OAuth2AccessToken");
         JwtUser user = (JwtUser) oAuth2Authentication.getPrincipal();
         Map<String, Object> map = new HashMap<>();
         map.put("userInfo", JSON.toJSON(user));
         // set additional information
         ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(map);
+        System.out.println("end enhance OAuth2AccessToken");
         return oAuth2AccessToken;
     }
 }
