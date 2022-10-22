@@ -24,23 +24,19 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
-name: CI
+name: CI/CD Pipeline
 
-
+#on:
+#  push:
+#    branches: [ "master" ]
+#  pull_request:
+#    branches: [ "master" ]
 on:
-  push:
-    branches: [ "master" ]
-
+  workflow_dispatch:
 
 env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: livecat-all           # set this to your Amazon ECR repository name
-  ECS_SERVICE: livecat-all-services
   ECS_CLUSTER: livecat-ecs-cluster-ec2-1                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/livecat-all.json # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: livecat-auth           # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
 
 permissions:
   contents: read
@@ -76,7 +72,7 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
 
-        mvn clean verify  # 生成所有的dockerfile
+        mvn clean verify
 
         # push livecat-auth
         docker tag livecat-auth:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
@@ -98,84 +94,50 @@ jobs:
         docker tag livecat-ticket:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
         docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: .aws/livecat-auth.json
-        container-name: livecat-auth
-        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
+    - name: Download task definitions
+      run: |
+        aws ecs describe-task-definition --task-definition livecat-gateway --query taskDefinition > livecat-gateway-task-definition.json
+        aws ecs describe-task-definition --task-definition livecat-system --query taskDefinition > livecat-system-task-definition.json
+        aws ecs describe-task-definition --task-definition livecat-auth --query taskDefinition > livecat-auth-task-definition.json
+        aws ecs describe-task-definition --task-definition livecat-ticket --query taskDefinition > livecat-ticket-task-definition.json
+        aws ecs describe-task-definition --task-definition livecat-order --query taskDefinition > livecat-order-task-definition.json
 
-    - name: Deploy Amazon ECS task definition
+    - name: Deploy Task livecat-gateway
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: livecat-auth-01
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
-    
-
-    - name: Fill in the new image ID in livecat-gateway
-      id: task-gateway
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: .aws/livecat-gateway.json
-        container-name: livecat-gateway
-        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
-
-    - name: Deploy livecat-gateway task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-gateway.outputs.task-definition }}
-        service: livecat-gateway-01
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
-    
-    - name: Fill in the new image ID in livecat-order
-      id: task-order
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: .aws/livecat-order.json
-        container-name: livecat-order
-        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
-
-    - name: Deploy livecat-order task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-order.outputs.task-definition }}
-        service: livecat-order-01
+        task-definition: livecat-gateway-task-definition.json
+        service: livecat-gateway
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
-    - name: Fill in the new image ID in livecat-system
-      id: task-system
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: .aws/livecat-system.json
-        container-name: livecat-system
-        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
-
-    - name: Deploy livecat-system task definition
+    - name: Deploy Task livecat-system
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-system.outputs.task-definition }}
-        service: livecat-system-01
+        task-definition: livecat-system-task-definition.json
+        service: livecat-system
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
-    - name: Fill in the new image ID in livecat-ticket
-      id: task-ticket
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: .aws/livecat-ticket.json
-        container-name: livecat-ticket
-        image: 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
-
-    - name: Deploy livecat-ticket task definition
+    - name: Deploy Task livecat-auth
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-ticket.outputs.task-definition }}
-        service: livecat-ticket-01
+        task-definition: livecat-auth-task-definition.json
+        service: livecat-auth
         cluster: ${{ env.ECS_CLUSTER }}
         wait-for-service-stability: true
 
+    - name: Deploy Task livecat-ticket
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: livecat-ticket-task-definition.json
+        service: livecat-ticket
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
+
+    - name: Deploy Task livecat-order
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: livecat-order-task-definition.json
+        service: livecat-order
+        cluster: ${{ env.ECS_CLUSTER }}
+        wait-for-service-stability: true
