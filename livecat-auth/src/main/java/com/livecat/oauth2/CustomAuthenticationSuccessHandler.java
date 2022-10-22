@@ -77,6 +77,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             OAuth2AccessToken accessToken = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
             result = Result.ok(accessToken);
         } catch(Exception e) {
+            e.printStackTrace();
             logger.error("AuthenticationSuccessHandler Exception={}", e.getMessage(), e);
             result = Result.build(ResultEnum.AUTH_FAIL.getCode(), e.getMessage());
         }
