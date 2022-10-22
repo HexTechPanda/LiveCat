@@ -77,4 +77,38 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         baseMapper.updateById(order);
         return Result.ok(order);
     }
+
+    @Override
+    public Result providerFindOrderList(){
+        String providerId = "pid0001";
+
+        if(StringUtils.isEmpty(providerId)){
+            return Result.error("Authentication exception");
+        }
+        QueryWrapper<Order> wrapper = new QueryWrapper();
+        wrapper.eq("provider_id", providerId);
+        wrapper.orderByDesc("create_time");
+        List<Order> orderList = baseMapper.selectList(wrapper);
+        return Result.ok(orderList);
+    }
+
+    @Override
+    public Result providerUpdateOrderStatus(String orderId, Integer status){
+        String providerId = "pid0001";
+
+        if(StringUtils.isEmpty(providerId)){
+            return Result.error("Authentication exception");
+        }
+        // find order
+        Order order = baseMapper.selectById(orderId);
+        if(order == null || !order.getProviderId().equals(providerId)){
+            return Result.error("order not found");
+        }
+        // validate status
+
+        // update status
+        order.setStatus(status);
+        baseMapper.updateById(order);
+        return Result.ok(order);
+    }
 }
