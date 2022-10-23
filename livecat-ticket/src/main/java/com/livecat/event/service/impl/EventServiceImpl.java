@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +50,7 @@ public class EventServiceImpl extends ServiceImpl<EventMapper, Event> implements
                 wrapper.like("title", req.getTitle());
             }
             List<Event> eventList = baseMapper.selectList(wrapper);
-            stringRedisTemplate.opsForValue().set("all-event-list", JSON.toJSONString(eventList), 30);
+            stringRedisTemplate.opsForValue().set("all-event-list", JSON.toJSONString(eventList), 15, TimeUnit.SECONDS);
             return Result.ok(eventList);
         }catch (Exception e){
             logger.error("Error in findEventSummaryVoPage. ", e);
