@@ -42,110 +42,93 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  #Test's job
+  tests:
+    name: Unit tests
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    #Job's steps
+    steps:
+      #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+      - uses: actions/checkout@v1
+      #Set up JDK 11
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      #Set up Maven cache
+      - name: Cache Maven packages
+        #This action allows caching dependencies and build outputs to improve workflow execution time.
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      #Run Tests
+      - name: Run Tests
+        run: mvn -B test
+  #Build's job
+  build:
+    needs: tests
+    name: Build
     runs-on: ubuntu-latest
     environment: production
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build a docker container and push it to ECR
+          mvn -B package -DskipTests
+  
+          # push livecat-auth
+          docker tag livecat-auth:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
+          docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
+  
+          # push livecat-gateway
+          docker tag livecat-gateway:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+          docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
+  
+          # push livecat-order
+          docker tag livecat-order:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
+          docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
+  
+          # push livecat-system
+          docker tag livecat-system:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
+          docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
+  
+          # push livecat-ticket
+          docker tag livecat-ticket:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
+          docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
+  #Deploy's job
+  deploy:
+    needs: build
+    name: Build
+    runs-on: ubuntu-latest
+    environment: production
 
-        mvn clean verify
-
-        # push livecat-auth
-        docker tag livecat-auth:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
-        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-auth:latest
-
-        # push livecat-gateway
-        docker tag livecat-gateway:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
-        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-gateway:latest
-
-        # push livecat-order
-        docker tag livecat-order:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
-        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-order:latest
-
-        # push livecat-system
-        docker tag livecat-system:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
-        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-system:latest
-
-        # push livecat-ticket
-        docker tag livecat-ticket:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
-        docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
-
-#    - name: Download task definitions
-#      run: |
-#        aws ecs describe-task-definition --task-definition livecat-gateway --query taskDefinition > livecat-gateway-task-definition.json
-#        aws ecs describe-task-definition --task-definition livecat-system --query taskDefinition > livecat-system-task-definition.json
-#        aws ecs describe-task-definition --task-definition livecat-auth --query taskDefinition > livecat-auth-task-definition.json
-#        aws ecs describe-task-definition --task-definition livecat-ticket --query taskDefinition > livecat-ticket-task-definition.json
-#        aws ecs describe-task-definition --task-definition livecat-order --query taskDefinition > livecat-order-task-definition.json
-
-    - name: Restart services
-      run: |
-        aws ecs update-service --force-new-deployment --service livecat-gateway --cluster ${{ env.ECS_CLUSTER }}
-        aws ecs update-service --force-new-deployment --service livecat-system --cluster ${{ env.ECS_CLUSTER }}
-        aws ecs update-service --force-new-deployment --service livecat-auth --cluster ${{ env.ECS_CLUSTER }}
-        aws ecs update-service --force-new-deployment --service livecat-ticket --cluster ${{ env.ECS_CLUSTER }}
-        aws ecs update-service --force-new-deployment --service livecat-order --cluster ${{ env.ECS_CLUSTER }}
-
-#    - name: Deploy Task livecat-gateway
-#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#      with:
-#        task-definition: livecat-gateway-task-definition.json
-#        service: livecat-gateway
-#        cluster: ${{ env.ECS_CLUSTER }}
-#        wait-for-service-stability: true
-#
-#    - name: Deploy Task livecat-system
-#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#      with:
-#        task-definition: livecat-system-task-definition.json
-#        service: livecat-system
-#        cluster: ${{ env.ECS_CLUSTER }}
-#        wait-for-service-stability: true
-#
-#    - name: Deploy Task livecat-auth
-#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#      with:
-#        task-definition: livecat-auth-task-definition.json
-#        service: livecat-auth
-#        cluster: ${{ env.ECS_CLUSTER }}
-#        wait-for-service-stability: true
-#
-#    - name: Deploy Task livecat-ticket
-#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#      with:
-#        task-definition: livecat-ticket-task-definition.json
-#        service: livecat-ticket
-#        cluster: ${{ env.ECS_CLUSTER }}
-#        wait-for-service-stability: true
-#
-#    - name: Deploy Task livecat-order
-#      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-#      with:
-#        task-definition: livecat-order-task-definition.json
-#        service: livecat-order
-#        cluster: ${{ env.ECS_CLUSTER }}
-#        wait-for-service-stability: true
+    steps:
+      - name: Restart services
+        run: |
+          aws ecs update-service --force-new-deployment --service livecat-gateway --cluster ${{ env.ECS_CLUSTER }}
+          aws ecs update-service --force-new-deployment --service livecat-system --cluster ${{ env.ECS_CLUSTER }}
+          aws ecs update-service --force-new-deployment --service livecat-auth --cluster ${{ env.ECS_CLUSTER }}
+          aws ecs update-service --force-new-deployment --service livecat-ticket --cluster ${{ env.ECS_CLUSTER }}
+          aws ecs update-service --force-new-deployment --service livecat-order --cluster ${{ env.ECS_CLUSTER }}
