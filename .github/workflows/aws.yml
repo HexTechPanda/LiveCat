@@ -120,12 +120,18 @@ jobs:
   #Deploy's job
   deploy:
     needs: build
-    name: Build
+    name: Deploy
     runs-on: ubuntu-latest
     environment: production
 
     steps:
-      - name: Restart services
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Restart ECS services
         run: |
           aws ecs update-service --force-new-deployment --service livecat-gateway --cluster ${{ env.ECS_CLUSTER }}
           aws ecs update-service --force-new-deployment --service livecat-system --cluster ${{ env.ECS_CLUSTER }}
