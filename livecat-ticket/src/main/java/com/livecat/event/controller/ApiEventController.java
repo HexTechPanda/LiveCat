@@ -23,7 +23,7 @@ public class ApiEventController {
     private ITicketService ticketService;
 
     @GetMapping("/events")
-    public Result getEventSummaryList(@RequestParam String title){
+    public Result getEventSummaryList(@RequestParam(required = false) String title){
         EventReq req = new EventReq();
         req.setTitle(title);
         return eventService.findEventSummaryVoPage(req);
