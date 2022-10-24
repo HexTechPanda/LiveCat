@@ -94,13 +94,13 @@ jobs:
         docker tag livecat-ticket:latest 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
         docker push 107366030820.dkr.ecr.us-east-1.amazonaws.com/livecat-ticket:latest
 
-    - name: Download task definitions
-      run: |
-        aws ecs describe-task-definition --task-definition livecat-gateway --query taskDefinition > livecat-gateway-task-definition.json
-        aws ecs describe-task-definition --task-definition livecat-system --query taskDefinition > livecat-system-task-definition.json
-        aws ecs describe-task-definition --task-definition livecat-auth --query taskDefinition > livecat-auth-task-definition.json
-        aws ecs describe-task-definition --task-definition livecat-ticket --query taskDefinition > livecat-ticket-task-definition.json
-        aws ecs describe-task-definition --task-definition livecat-order --query taskDefinition > livecat-order-task-definition.json
+#    - name: Download task definitions
+#      run: |
+#        aws ecs describe-task-definition --task-definition livecat-gateway --query taskDefinition > livecat-gateway-task-definition.json
+#        aws ecs describe-task-definition --task-definition livecat-system --query taskDefinition > livecat-system-task-definition.json
+#        aws ecs describe-task-definition --task-definition livecat-auth --query taskDefinition > livecat-auth-task-definition.json
+#        aws ecs describe-task-definition --task-definition livecat-ticket --query taskDefinition > livecat-ticket-task-definition.json
+#        aws ecs describe-task-definition --task-definition livecat-order --query taskDefinition > livecat-order-task-definition.json
 
     - name: Restart services
       run: |
