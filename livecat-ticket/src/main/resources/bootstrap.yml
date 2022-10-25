@@ -8,5 +8,8 @@ spring:
       config:
         server-addr: 127.0.0.1:8848
         file-extension: yml
+    inetutils:
+      use-only-site-local-interfaces: true
+      preferred-networks: 10.0
   profiles:
     active: dev # read ticket-server-dev.yml
